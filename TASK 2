@@ -1,0 +1,543 @@
+                  TASK DESCRIPTION
+
+Create a Hospital Management System
+Develop a sophisticated Java program to manage various aspects of a
+hospital or healthcare facility. This system should include modules for
+patient registration, appointment scheduling, electronic health records
+(EHR), billing and invoicing, inventory management for medical supplies,
+and staff management.
+
+                    JAVA PROGRAM
+
+/* HospitalManagementSystem/
+└── src/
+    └── main/
+        └── java/
+            └── com/
+                └── hospitalmanagement/
+                    ├── HospitalManagementSystem.java
+                    ├── Patient.java
+                    ├── PatientRegistrationService.java
+                    ├── Appointment.java
+                    ├── AppointmentService.java
+                    ├── EHR.java
+                    ├── EHRService.java
+                    ├── Bill.java
+                    ├── BillingService.java
+                    ├── InventoryItem.java
+                    ├── InventoryService.java
+                    ├── Staff.java
+                    └── StaffService.java  */
+
+                    import java.util.*;
+
+                    public class Patient {
+                        private String id;
+                        private String name;
+                        private String address;
+                        private String phoneNumber;
+                        private String email;
+                        private String medicalHistory;
+                    
+                        // Constructor, Getters, and Setters
+                        public Patient(String id, String name, String address, String phoneNumber, String email, String medicalHistory) {
+                            this.id = id;
+                            this.name = name;
+                            this.address = address;
+                            this.phoneNumber = phoneNumber;
+                            this.email = email;
+                            this.medicalHistory = medicalHistory;
+                        }
+                    
+                        public String getId() {
+                            return id;
+                        }
+                    
+                        public void setId(String id) {
+                            this.id = id;
+                        }
+                    
+                        public String getName() {
+                            return name;
+                        }
+                    
+                        public void setName(String name) {
+                            this.name = name;
+                        }
+                    
+                        public String getAddress() {
+                            return address;
+                        }
+                    
+                        public void setAddress(String address) {
+                            this.address = address;
+                        }
+                    
+                        public String getPhoneNumber() {
+                            return phoneNumber;
+                        }
+                    
+                        public void setPhoneNumber(String phoneNumber) {
+                            this.phoneNumber = phoneNumber;
+                        }
+                    
+                        public String getEmail() {
+                            return email;
+                        }
+                    
+                        public void setEmail(String email) {
+                            this.email = email;
+                        }
+                    
+                        public String getMedicalHistory() {
+                            return medicalHistory;
+                        }
+                    
+                        public void setMedicalHistory(String medicalHistory) {
+                            this.medicalHistory = medicalHistory;
+                        }
+                    }
+                    package com.hospitalmanagement;
+                    
+                    
+                    
+                    public class PatientRegistrationService {
+                        private Map<String, Patient> patientRegistry = new HashMap<>();
+                    
+                        public void registerPatient(Patient patient) {
+                            patientRegistry.put(patient.getId(), patient);
+                            System.out.println("Patient registered successfully.");
+                        }
+                    
+                        public void updatePatientDetails(String patientId, Patient updatedPatient) {
+                            if (patientRegistry.containsKey(patientId)) {
+                                patientRegistry.put(patientId, updatedPatient);
+                                System.out.println("Patient details updated successfully.");
+                            } else {
+                                System.out.println("Patient not found.");
+                            }
+                        }
+                    
+                        public Patient getPatientDetails(String patientId) {
+                            return patientRegistry.get(patientId);
+                        }
+                    }
+                    package com.hospitalmanagement;
+                    
+                    
+                    
+                    public class Appointment {
+                        private String appointmentId;
+                        private String patientId;
+                        private String doctorId;
+                        private LocalDateTime appointmentTime;
+                    
+                        // Constructor, Getters, and Setters
+                        public Appointment(String appointmentId, String patientId, String doctorId, LocalDateTime appointmentTime) {
+                            this.appointmentId = appointmentId;
+                            this.patientId = patientId;
+                            this.doctorId = doctorId;
+                            this.appointmentTime = appointmentTime;
+                        }
+                    
+                        public String getAppointmentId() {
+                            return appointmentId;
+                        }
+                    
+                        public void setAppointmentId(String appointmentId) {
+                            this.appointmentId = appointmentId;
+                        }
+                    
+                        public String getPatientId() {
+                            return patientId;
+                        }
+                    
+                        public void setPatientId(String patientId) {
+                            this.patientId = patientId;
+                        }
+                    
+                        public String getDoctorId() {
+                            return doctorId;
+                        }
+                    
+                        public void setDoctorId(String doctorId) {
+                            this.doctorId = doctorId;
+                        }
+                    
+                        public LocalDateTime getAppointmentTime() {
+                            return appointmentTime;
+                        }
+                    
+                        public void setAppointmentTime(LocalDateTime appointmentTime) {
+                            this.appointmentTime = appointmentTime;
+                        }
+                    }
+                    package com.hospitalmanagement;
+                    
+                    
+                    
+                    public class AppointmentService {
+                        private Map<String, Appointment> appointmentRegistry = new HashMap<>();
+                    
+                        public void scheduleAppointment(Appointment appointment) {
+                            appointmentRegistry.put(appointment.getAppointmentId(), appointment);
+                            System.out.println("Appointment scheduled successfully.");
+                        }
+                    
+                        public void cancelAppointment(String appointmentId) {
+                            if (appointmentRegistry.containsKey(appointmentId)) {
+                                appointmentRegistry.remove(appointmentId);
+                                System.out.println("Appointment cancelled successfully.");
+                            } else {
+                                System.out.println("Appointment not found.");
+                            }
+                        }
+                    
+                        public List<Appointment> viewAppointmentsByPatient(String patientId) {
+                            return appointmentRegistry.values().stream()
+                                    .filter(appointment -> appointment.getPatientId().equals(patientId))
+                                    .collect(Collectors.toList());
+                        }
+                    
+                        public List<Appointment> viewAppointmentsByDoctor(String doctorId) {
+                            return appointmentRegistry.values().stream()
+                                    .filter(appointment -> appointment.getDoctorId().equals(doctorId))
+                                    .collect(Collectors.toList());
+                        }
+                    }
+                    package com.hospitalmanagement;
+                    
+                    
+                    
+                    public class EHR {
+                        private String recordId;
+                        private String patientId;
+                        private String doctorNotes;
+                        private Date dateOfVisit;
+                    
+                        // Constructor, Getters, and Setters
+                        public EHR(String recordId, String patientId, String doctorNotes, Date dateOfVisit) {
+                            this.recordId = recordId;
+                            this.patientId = patientId;
+                            this.doctorNotes = doctorNotes;
+                            this.dateOfVisit = dateOfVisit;
+                        }
+                    
+                        public String getRecordId() {
+                            return recordId;
+                        }
+                    
+                        public void setRecordId(String recordId) {
+                            this.recordId = recordId;
+                        }
+                    
+                        public String getPatientId() {
+                            return patientId;
+                        }
+                    
+                        public void setPatientId(String patientId) {
+                            this.patientId = patientId;
+                        }
+                    
+                        public String getDoctorNotes() {
+                            return doctorNotes;
+                        }
+                    
+                        public void setDoctorNotes(String doctorNotes) {
+                            this.doctorNotes = doctorNotes;
+                        }
+                    
+                        public Date getDateOfVisit() {
+                            return dateOfVisit;
+                        }
+                    
+                        public void setDateOfVisit(Date dateOfVisit) {
+                            this.dateOfVisit = dateOfVisit;
+                        }
+                    }
+                package com.hospitalmanagement;
+                    
+                    
+                    
+                    public class EHRService {
+                        private Map<String, EHR> ehrRegistry = new HashMap<>();
+                    
+                        public void addRecord(EHR ehr) {
+                            ehrRegistry.put(ehr.getRecordId(), ehr);
+                            System.out.println("EHR added successfully.");
+                        }
+                    
+                        public void updateRecord(String recordId, EHR updatedEHR) {
+                            if (ehrRegistry.containsKey(recordId)) {
+                                ehrRegistry.put(recordId, updatedEHR);
+                                System.out.println("EHR updated successfully.");
+                            } else {
+                                System.out.println("EHR not found.");
+                            }
+                        }
+                    
+                        public EHR retrieveRecord(String recordId) {
+                            return ehrRegistry.get(recordId);
+                        }
+                    }
+                    package com.hospitalmanagement;
+                    
+                    public class Bill {
+                        private String billId;
+                        private String patientId;
+                        private double amount;
+                        private boolean isPaid;
+                    
+                        // Constructor, Getters, and Setters
+                        public Bill(String billId, String patientId, double amount, boolean isPaid) {
+                            this.billId = billId;
+                            this.patientId = patientId;
+                            this.amount = amount;
+                            this.isPaid = isPaid;
+                        }
+                    
+                        public String getBillId() {
+                            return billId;
+                        }
+                    
+                        public void setBillId(String billId) {
+                            this.billId = billId;
+                        }
+                    
+                        public String getPatientId() {
+                            return patientId;
+                        }
+                    
+                        public void setPatientId(String patientId) {
+                            this.patientId = patientId;
+                        }
+                    
+                        public double getAmount() {
+                            return amount;
+                        }
+                    
+                        public void setAmount(double amount) {
+                            this.amount = amount;
+                        }
+                    
+                        public boolean isPaid() {
+                            return isPaid;
+                        }
+                    
+                        public void setPaid(boolean isPaid) {
+                            this.isPaid = isPaid;
+                        }
+                    }
+                    package com.hospitalmanagement;
+                    
+                    
+                    
+                    public class BillingService {
+                        private Map<String, Bill> billRegistry = new HashMap<>();
+                    
+                        public void generateBill(Bill bill) {
+                            billRegistry.put(bill.getBillId(), bill);
+                            System.out.println("Bill generated successfully.");
+                        }
+                    
+                        public void processPayment(String billId) {
+                            Bill bill = billRegistry.get(billId);
+                            if (bill != null && !bill.isPaid()) {
+                                bill.setPaid(true);
+                                System.out.println("Payment processed successfully.");
+                            } else if (bill == null) {
+                                System.out.println("Bill not found.");
+                            } else {
+                                System.out.println("Bill is already paid.");
+                            }
+                        }
+                    
+                        public Bill viewBill(String billId) {
+                            return billRegistry.get(billId);
+                        }
+                    }
+                    package com.hospitalmanagement;
+                    
+                    public class InventoryItem {
+                        private String itemId;
+                        private String itemName;
+                        private int quantity;
+                    
+                        // Constructor, Getters, and Setters
+                        public InventoryItem(String itemId, String itemName, int quantity) {
+                            this.itemId = itemId;
+                            this.itemName = itemName;
+                            this.quantity = quantity;
+                        }
+                    
+                        public String getItemId() {
+                            return itemId;
+                        }
+                    
+                        public void setItemId(String itemId) {
+                            this.itemId = itemId;
+                        }
+                    
+                        public String getItemName() {
+                            return itemName;
+                        }
+                    
+                        public void setItemName(String itemName) {
+                            this.itemName = itemName;
+                        }
+                    
+                        public int getQuantity() {
+                            return quantity;
+                        }
+                    
+                        public void setQuantity(int quantity) {
+                            this.quantity = quantity;
+                        }
+                    }
+                    package com.hospitalmanagement;
+                    
+                    //import java.util.HashMap;
+                    //import java.util.Map;
+                    
+                    public class InventoryService {
+                        private Map<String, InventoryItem> inventoryRegistry = new HashMap<>();
+                    
+                        public void addInventoryItem(InventoryItem item) {
+                            inventoryRegistry.put(item.getItemId(), item);
+                            System.out.println("Inventory item added successfully.");
+                        }
+                    
+                        public void updateInventoryQuantity(String itemId, int newQuantity) {
+                            InventoryItem item = inventoryRegistry.get(itemId);
+                            if (item != null) {
+                                item.setQuantity(newQuantity);
+                                System.out.println("Inventory updated successfully.");
+                            } else {
+                                System.out.println("Item not found.");
+                            }
+                        }
+                    
+                        public InventoryItem checkInventoryLevels(String itemId) {
+                            return inventoryRegistry.get(itemId);
+                        }
+                    }
+                package com.hospitalmanagement;
+                    
+                    public class Staff {
+                        private String staffId;
+                        private String name;
+                        private String role;
+                    
+                        // Constructor, Getters, and Setters
+                        public Staff(String staffId, String name, String role) {
+                            this.staffId = staffId;
+                            this.name = name;
+                            this.role = role;
+                        }
+                    
+                        public String getStaffId() {
+                            return staffId;
+                        }
+                    
+                        public void setStaffId(String staffId) {
+                            this.staffId = staffId;
+                        }
+                    
+                        public String getName() {
+                            return name;
+                        }
+                    
+                        public void setName(String name) {
+                            this.name = name;
+                        }
+                    
+                        public String getRole() {
+                            return role;
+                        }
+                    
+                        public void setRole(String role) {
+                            this.role = role;
+                        }
+                    }
+                    package com.hospitalmanagement;
+                    
+                    //import java.util.HashMap;
+                    //import java.util.Map;
+                    
+                    public class StaffService {
+                        private Map<String, Staff> staffRegistry = new HashMap<>();
+                    
+                        public void addStaffMember(Staff staff) {
+                            staffRegistry.put(staff.getStaffId(), staff);
+                            System.out.println("Staff member added successfully.");
+                        }
+                    
+                        public void updateStaffDetails(String staffId, Staff updatedStaff) {
+                            if (staffRegistry.containsKey(staffId)) {
+                                staffRegistry.put(staffId, updatedStaff);
+                                System.out.println("Staff details updated successfully.");
+                            } else {
+                                System.out.println("Staff not found.");
+                            }
+                        }
+                    
+                        public Staff viewStaffDetails(String staffId) {
+                            return staffRegistry.get(staffId);
+                        }
+                    }
+                    package com.hospitalmanagement;
+                    
+                   
+                    public class HospitalManagementSystem {
+                    
+                        public static void main(String[] args) {
+                            // Create services
+                            PatientRegistrationService patientService = new PatientRegistrationService();
+                            AppointmentService appointmentService = new AppointmentService();
+                            EHRService ehrService = new EHRService();
+                            BillingService billingService = new BillingService();
+                            InventoryService inventoryService = new InventoryService();
+                            StaffService staffService = new StaffService();
+                    
+                            // Example of usage
+                    
+                            // Register a patient
+                            Patient patient = new Patient("P001", "John Doe", "123 Main St", "555-1234", "johndoe@example.com", "No history");
+                            patientService.registerPatient(patient);
+                    
+                            // Schedule an appointment
+                            Appointment appointment = new Appointment("A001", "P001", "D001", LocalDateTime.now());
+                            appointmentService.scheduleAppointment(appointment);
+                    
+                            // Add an EHR
+                            EHR ehr = new EHR("R001", "P001", "Regular checkup, all good.", new Date());
+                            ehrService.addRecord(ehr);
+                    
+                            // Generate a bill
+                            Bill bill = new Bill("B001", "P001", 200.0, false);
+                            billingService.generateBill(bill);
+                    
+                            // Process payment
+                            billingService.processPayment("B001");
+                    
+                            // Add inventory item
+                            InventoryItem item = new InventoryItem("I001", "Bandages", 100);
+                            inventoryService.addInventoryItem(item);
+                    
+                            // Add staff member
+                            Staff staff = new Staff("S001", "Dr. Smith", "Doctor");
+                            staffService.addStaffMember(staff);
+                        }
+                    }
+                    
+                 
+
+                        OUTPUT
+
+ Patient registered successfully.
+Appointment scheduled successfully.
+EHR added successfully.
+Bill generated successfully.
+Payment processed successfully.
+Inventory item added successfully.
+Staff member added successfully.
